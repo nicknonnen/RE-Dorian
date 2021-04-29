@@ -127,7 +127,7 @@ ggplot() +
 #Connectign to Postgres
 #Create a con database connection with the dbConnect function.
 #Change the user and password to your own!
-con <- dbConnect(RPostgres::Postgres(), dbname='dsm', host='artemis', user='nick', password='990862685885') 
+con <- dbConnect(RPostgres::Postgres(), dbname='dsm', host='artemis', user='nick', password='password here') 
 
 #list the database tables, to check if the database is working
 dbListTables(con) 
