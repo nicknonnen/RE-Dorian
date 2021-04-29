@@ -176,7 +176,7 @@ dbDisconnect(con)
 # Count the number of november points in each county
 
 # Set counties with no points to 0 for the november count
-# UPDATE for 
+# UPDATE for NULL = 0
 
 # Calculate the normalized difference tweet index (made this up, based on NDVI), where
 
