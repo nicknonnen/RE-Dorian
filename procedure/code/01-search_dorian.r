@@ -58,6 +58,8 @@ november <- search_tweets("-filter:verified OR filter:verified", n=200000, inclu
 # into the data\derived\private folder
 # then run the following line of code to load the data into your environment
 
+i_am("data/derivedprivate/dorian.RData")
+
 load(here("data","derived","private","dorian.RData"))
 
 # In the following code, you can practice running the queries on dorian3

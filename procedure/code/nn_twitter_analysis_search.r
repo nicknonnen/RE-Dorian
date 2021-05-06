@@ -16,7 +16,7 @@ library(rehydratoR)
 
 twitter_token = create_token(
   app = "Open Source GIScience",                     #enter your app name in quotes
-  consumer_key = "HSF9cPtTb0GOoxO5RO2BYry9k",  		      #enter your consumer key in quotes
+  consumer_key = "HSF9cPtTb0GOoxO5RO2BYry9k",  		      #enter your consumer key in quotes - this is Kufre's!!!
   consumer_secret = "Rn9P8dWPWANJMZHKk86WvB40Toi433KGBDOJTAmEbToRBBVPje",         #enter your consumer secret in quotes
   access_token = NULL,
   access_secret = NULL
@@ -30,6 +30,10 @@ tornado <- search_tweets("tornado OR Atlanta OR mswx OR TXwx", n=200000, include
 #get tweets without any text filter for the same geographic region in March, searched on May 5, 2021 (what does this accomplish??)
 #the query searches for all verified or unverified tweets, so essentially everything
 # march <- search_tweets("-filter:verified OR filter:verified", n=200000, include_rts=FALSE, token=twitter_token, geocode="32,-78,1000mi", retryonratelimit=TRUE)
+
+# load(here("data","derived","private","tornado.RDS"))
+
+tornado <- readRDS(here("data","derived","private","tornado.RDS"))
 
 ############# FIND ONLY PRECISE GEOGRAPHIES #############
 
