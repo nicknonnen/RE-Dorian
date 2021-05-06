@@ -126,6 +126,7 @@ novemberids =
                         numerals = 'no.loss'))
 
 # rehydrate dorian tweets
+# rehydration = using Tweet IDs to access full Tweets
 dorian_raw = rehydratoR(twitter_token$app$key, twitter_token$app$secret, 
                 twitter_token$credentials$oauth_token, 
                 twitter_token$credentials$oauth_secret, dorianids, 
