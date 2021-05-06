@@ -128,12 +128,12 @@ dorianWordPairs %>%
 
 #first, sign up for a Census API here:
 # https://api.census.gov/data/key_signup.html
-#replace the key text 'yourkey' with your own key!
+#replace the key text 'yourkey' with '464687d998eb6485e2be7346dacdfbf59407aff5'! #this one is actually my key
 counties <- get_estimates("county",
                           product="population",
                           output="wide",
                           geometry=TRUE, keep_geo_vars=TRUE, 
-                          key="yourkey")
+                          key="464687d998eb6485e2be7346dacdfbf59407aff5")
 
 # select only the states you want, with FIPS state codes
 # look up fips codes here:
