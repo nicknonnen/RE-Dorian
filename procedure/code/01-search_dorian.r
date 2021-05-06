@@ -35,9 +35,9 @@ library(rehydratoR)
 # this should launch a web browser and ask you to log in to twitter
 # for authentication of access_token and access_secret
 twitter_token = create_token(
-  app = "",                     #enter your app name in quotes
-  consumer_key = "",  		      #enter your consumer key in quotes
-  consumer_secret = "",         #enter your consumer secret in quotes
+  app = "Open Source GIScience",                     #enter your app name in quotes
+  consumer_key = "HSF9cPtTb0GOoxO5RO2BYry9k",  		      #enter your consumer key in quotes - this is Kufre's!!!
+  consumer_secret = "Rn9P8dWPWANJMZHKk86WvB40Toi433KGBDOJTAmEbToRBBVPje",         #enter your consumer secret in quotes
   access_token = NULL,
   access_secret = NULL
 )
@@ -58,7 +58,7 @@ november <- search_tweets("-filter:verified OR filter:verified", n=200000, inclu
 # into the data\derived\private folder
 # then run the following line of code to load the data into your environment
 
-i_am("data/derivedprivate/dorian.RData")
+# i_am("data/derivedprivate/dorian.RData")
 
 load(here("data","derived","private","dorian.RData"))
 

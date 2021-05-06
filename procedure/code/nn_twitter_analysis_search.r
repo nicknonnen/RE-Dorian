@@ -31,8 +31,8 @@ tornado <- search_tweets("tornado OR Atlanta OR mswx OR TXwx", n=200000, include
 #the query searches for all verified or unverified tweets, so essentially everything
 # march <- search_tweets("-filter:verified OR filter:verified", n=200000, include_rts=FALSE, token=twitter_token, geocode="32,-78,1000mi", retryonratelimit=TRUE)
 
+# run the following two lines of code if the data is already downloaded
 # load(here("data","derived","private","tornado.RDS"))
-
 tornado <- readRDS(here("data","derived","private","tornado.RDS"))
 
 ############# FIND ONLY PRECISE GEOGRAPHIES #############
