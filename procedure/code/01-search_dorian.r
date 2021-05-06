@@ -149,8 +149,8 @@ november = rehydratoR(twitter_token$app$key, twitter_token$app$secret,
 # alternatively, geog 323 students may load 13228 cleaned november tweets
 # download november.RDS from 
 # https://github.com/GIS4DEV/geog323data/raw/main/dorian/november.RDS
-# and save to the data/derived/private folder
-november = readRDS(here("data","derived","private","november.RDS"))
+# and save to the data/raw/private folder
+november = readRDS(here("data","raw","private","november.RDS"))
 
 ############# FILTER DORIAN FOR CREATING PRECISE GEOMETRIES ############# 
 

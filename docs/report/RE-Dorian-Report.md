@@ -55,8 +55,8 @@ Outline the data to be used in your replication study, including:
 
 ## Replication Results
 
-- temporal analysis graph
-- content analysis graph
+- temporal analysis graph - zigzaggy line graph
+- content analysis graph - ugly basketball looking thing with blue sphere on top, graph of frequencies of words, word network cloud
 - map of twitter activity
 - hot spot analysis
 
