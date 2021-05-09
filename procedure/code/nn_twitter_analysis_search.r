@@ -273,7 +273,7 @@ thresdist_tornado = counties_tornado %>%
 
 # three optional steps to view results of nearest neighbors analysis
 thresdist_tornado # view statistical summary of the nearest neighbors 
-  # Neighbour list object:
+  # Neighbor list object:
   # Number of regions: 1705 
   # Number of nonzero links: 48793 
   # Percentage nonzero weights: 1.678451 
@@ -284,4 +284,52 @@ plot(selfdist, coords, add=TRUE, col = 'red') # plot nearest neighbor ties
 
 #Create weight matrix from the neighbor objects
 dwm_tornado = nb2listw(thresdist_tornado, zero.policy = T)
+
+
+######## Local G* Hotspot Analysis ######## 
+#Get Ord G* statistic for hot and cold spots
+counties_tornado$locG = as.vector(localG(counties_tornado$dorrate, listw = dwm_tornado, 
+                                 zero.policy = TRUE))
+
+# optional step to check summary statistics of the local G score
+summary(counties_tornado$locG)
+  #    Min.  1st Qu. Median   Mean  3rd Qu.  Max. 
+  # -1.8925 -1.1712 -0.8602 -0.2238 -0.1246 13.2525 
+
+# classify G scores by significance values typical of Z-scores
+# where 1.15 is at the 0.125 confidence level,
+# and 1.95 is at the 0.05 confidence level for two tailed z-scores
+# based on Getis and Ord (1995) Doi: 10.1111/j.1538-4632.1992.tb00261.x
+# to find other critical values, use the qnorm() function as shown here:
+# https://methodenlehre.github.io/SGSCLM-R-course/statistical-distributions.html
+# Getis Ord also suggest applying a Bonferroni correction 
+
+siglevel = c(1.15,1.95)
+counties_tornado = counties_tornado %>% 
+  mutate(sig = cut(locG, c(min(counties_tornado$locG),
+                           siglevel[2]*-1,
+                           siglevel[1]*-1,
+                           siglevel[1],
+                           siglevel[2],
+                           max(counties_tornado$locG))))
+rm(siglevel)
+
+# Map hot spots and cold spots!
+# breaks and colors from http://michaelminn.net/tutorials/r-point-analysis/
+# based on 1.96 as the 95% confidence interval for z-scores
+# if your results don't have values in each of the 5 categories, you may need
+# to change the values & labels accordingly.
+ggplot() +
+  geom_sf(data=counties_tornado, aes(fill=sig), color="white", lwd=0.1)+
+  scale_fill_manual(
+    values = c("#0000FF80", "#8080FF80", "#FFFFFF80", "#FF808080", "#FF000080"),
+    labels = c("low","", "insignificant","","high"),
+    aesthetics = "fill"
+  ) +
+  guides(fill=guide_legend(title="Hot Spots"))+
+  labs(title = "Clusters of Early May Southeast Tornado Twitter Activity")+
+  theme(plot.title=element_text(hjust=0.5),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank())
+
 
