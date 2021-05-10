@@ -4,7 +4,8 @@
 # See https://cran.r-project.org/web/packages/rtweet/vignettes/auth.html
 
 # install packages for twitter querying and initialize the library
-packages = c("rtweet","here","dplyr","rehydratoR")
+packages = c("rtweet","here","dplyr","rehydratoR","tidycensus","tidytext","maps","RPostgres","igraph","tm", 
+             "ggplot2","RColorBrewer","rccmisc","ggraph", "tidyr", "spdep", "sf")
 setdiff(packages, rownames(installed.packages()))
 install.packages(setdiff(packages, rownames(installed.packages())),
                  quietly=TRUE)
@@ -13,6 +14,7 @@ library(rtweet)
 library(here)
 library(dplyr)
 library(rehydratoR)
+library(igraph)
 library(tidytext)
 library(tm)
 library(tidyr)
@@ -23,10 +25,8 @@ library(RPostgres)
 library(RColorBrewer)
 library(DBI)
 library(rccmisc)
-library(here)
 library(spdep)
 library(sf)
-library(tidyverse)
 
 twitter_token = create_token(
   app = "Open Source GIScience",                     #enter your app name in quotes
@@ -86,7 +86,7 @@ tornado_raw = rehydratoR(twitter_token$app$key, twitter_token$app$secret,
                         twitter_token$credentials$oauth_secret, tornadoids, 
                         base_path = NULL, group_start = 1)
 
-############# FILTER DORIAN FOR CREATING PRECISE GEOMETRIES ############# 
+############# FILTER TORNADO FOR CREATING PRECISE GEOMETRIES ############# 
 
 # reference for lat_lng function: https://rtweet.info/reference/lat_lng.html
 # adds a lat and long field to the data frame, picked out of the fields
@@ -114,6 +114,13 @@ tornado = lat_lng(tornado,coords=c("bbox_coords"))
 
 # re-check counts of place types
 count(tornado, place_type)
+# A tibble: 4 x 2
+# place_type       n
+# <chr>        <int>
+  # 1 admin          987
+  # 2 city          6624
+  # 3 neighborhood     8
+  # 4 poi            117
 
 ############# SAVE FILTERED TWEET IDS TO DATA/DERIVED/PUBLIC ############# 
 
@@ -174,7 +181,7 @@ tornadoWords = tornadoText %>% unnest_tokens(word, text)
 
 # how many words do you have including the stop words?
 count(tornadoWords)
-  # n = 142,827
+  # n = 142,342
 
 # create list of stop words (useless words not worth analyzing) 
 data("stop_words")
@@ -193,7 +200,7 @@ tornadoWords =  tornadoWords %>% anti_join(stop_words)
 
 # how many words after removing the stop words?
 count(tornadoWords)
-  # n = 79,167
+  # n = 78,937
 
 # graph frequencies of words
 tornadoWords %>%
@@ -229,6 +236,27 @@ tornadoWordPairs %>%
   theme_void()
 
 
+############# SPATIAL ANALYSIS PREP############# 
+
+#first, sign up for a Census API here:
+# https://api.census.gov/data/key_signup.html
+#replace the key text 'yourkey' with '464687d998eb6485e2be7346dacdfbf59407aff5'! #this one is actually my key
+counties_tornado <- get_estimates("county",
+                          product="population",
+                          output="wide",
+                          geometry=TRUE, keep_geo_vars=TRUE, 
+                          key="464687d998eb6485e2be7346dacdfbf59407aff5")
+
+# select only the states you want, with FIPS state codes
+# look up fips codes here:
+# https://en.wikipedia.org/wiki/Federal_Information_Processing_Standard_state_code 
+counties_tornado = filter(counties_tornado,
+                  STATEFP %in% c('48', '22', '28', '01', '12', '13', '45', '37', 
+                                 '47', '21', '05', '29', '51', '54') )
+
+# states to include: TX, LA, MS, AL, FL, GA, SC, NC, TN, KY, AR, MO, VA, WV
+#                 = '48', '22', '28', '01', '12', '13', '45', '37', '47', '21', '05', '29', '51', '54'
+
 ######## SPATIAL JOIN TWEETS and COUNTIES ######## 
 # This code was developed by Joseph Holler, 2021
 # This section may not be necessary if you have already spatially joined
@@ -237,7 +265,7 @@ tornadoWordPairs %>%
 tornado_sf = tornado %>%
   st_as_sf(coords = c("lng","lat"), crs=4326) %>%  # make point geometries
   st_transform(4269) %>%  # transform to NAD 1983
-  st_join(select(counties,GEOID))  # spatially join counties to each tweet
+  st_join(select(counties_tornado,GEOID))  # spatially join counties to each tweet
 
 tornado_by_county = tornado_sf %>%
   st_drop_geometry() %>%   # drop geometry / make simple table
@@ -249,9 +277,12 @@ tornado_by_county = tornado_sf %>%
  #  left_join(tornado_by_county, by="GEOID") %>% # join count of tweets to counties
  #  mutate(tornado = replace_na(tornado,0))       # replace nulls with 0's
 
-counties_tornado <- counties %>%
+counties_tornado <- counties_tornado %>%
   left_join(tornado_by_county, by="GEOID") %>% # join count of tweets to counties
   mutate(tornado = replace_na(tornado,0))        # replace nulls with 0's
+
+counties_tornado = counties_tornado %>%
+  mutate(torrate = tornado / POP * 10000)  # torrate is tweets per 10,000
 
 rm(tornado_by_county)
 
@@ -274,10 +305,10 @@ thresdist_tornado = counties_tornado %>%
 # three optional steps to view results of nearest neighbors analysis
 thresdist_tornado # view statistical summary of the nearest neighbors 
   # Neighbor list object:
-  # Number of regions: 1705 
-  # Number of nonzero links: 48793 
-  # Percentage nonzero weights: 1.678451 
-  # Average number of links: 28.6176 
+  # Number of regions: 1432 
+  # Number of nonzero links: 37190 
+  # Percentage nonzero weights: 1.813594 
+  # Average number of links: 25.97067 
 
 plot(counties_tornado, border = 'lightgrey')  # plot counties background
 plot(selfdist, coords, add=TRUE, col = 'red') # plot nearest neighbor ties
@@ -288,13 +319,13 @@ dwm_tornado = nb2listw(thresdist_tornado, zero.policy = T)
 
 ######## Local G* Hotspot Analysis ######## 
 #Get Ord G* statistic for hot and cold spots
-counties_tornado$locG = as.vector(localG(counties_tornado$dorrate, listw = dwm_tornado, 
+counties_tornado$locG = as.vector(localG(counties_tornado$torrate, listw = dwm_tornado, 
                                  zero.policy = TRUE))
 
 # optional step to check summary statistics of the local G score
 summary(counties_tornado$locG)
   #    Min.  1st Qu. Median   Mean  3rd Qu.  Max. 
-  # -1.8925 -1.1712 -0.8602 -0.2238 -0.1246 13.2525 
+  # -1.42427 -0.92466 -0.62407 -0.04203 -0.17542 8.79365 
 
 # classify G scores by significance values typical of Z-scores
 # where 1.15 is at the 0.125 confidence level,
