@@ -40,6 +40,10 @@ twitter_token = create_token(
 #get tweets for Georgia tornado, searched on May 5, 2021
 tornado <- search_tweets("tornado OR Atlanta OR mswx OR TXwx", n=200000, include_rts=FALSE, token=twitter_token, geocode="32,-78,1000mi", retryonratelimit=TRUE)
 
+#get tweets without any text filter for the same geographic region in May, searched on May 11, 2021
+#the query searches for all verified or unverified tweets, so essentially everything
+may <- search_tweets("-filter:verified OR filter:verified", n=200000, include_rts=FALSE, token=twitter_token, geocode="32,-78,1000mi", retryonratelimit=TRUE)
+
 #get tweets without any text filter for the same geographic region in March, searched on May 5, 2021 (what does this accomplish??)
 #the query searches for all verified or unverified tweets, so essentially everything
 # march <- search_tweets("-filter:verified OR filter:verified", n=200000, include_rts=FALSE, token=twitter_token, geocode="32,-78,1000mi", retryonratelimit=TRUE)
@@ -60,16 +64,23 @@ count(tornado, place_type)
 #convert GPS coordinates into lat and lng columns
 #do not use geo_coords! Lat/Lng will come out inverted
 tornado <- lat_lng(tornado,coords=c("coords_coords"))
+may <- lat_lng(may,coords=c("coords_coords"))
 
 #select any tweets with lat and lng columns (from GPS) or designated place types of your choosing
 tornado <- subset(tornado, place_type == 'city'| place_type == 'neighborhood'| place_type == 'poi' | !is.na(lat))
+may <- subset(may, place_type == 'city'| place_type == 'neighborhood'| place_type == 'poi' | !is.na(lat))
 
 #convert bounding boxes into centroids for lat and lng columns
 tornado <- lat_lng(tornado,coords=c("bbox_coords"))
+may <- lat_lng(may,coords=c("bbox_coords"))
 
 # write results of the original twitter search
 write.table(tornado$status_id,
             here("data","raw","public","tornadoids.txt"), 
+            append=FALSE, quote=FALSE, row.names = FALSE, col.names = FALSE)
+
+write.table(may$status_id,
+            here("data","derived","public","mayids.txt"), 
             append=FALSE, quote=FALSE, row.names = FALSE, col.names = FALSE)
 
 ############# LOAD SEARCH TWEET RESULTS  ############# 
@@ -79,12 +90,21 @@ tornadoids =
   data.frame(read.table(here("data","raw","public","tornadoids.txt"), 
                         numerals = 'no.loss'))
 
+mayids =
+  data.frame(read.table(here("data","derived","public","mayids.txt"),
+                        numerals = 'no.loss'))
+
 # rehydrate tornado tweets
 # rehydration = using Tweet IDs to access full Tweets
 tornado_raw = rehydratoR(twitter_token$app$key, twitter_token$app$secret, 
                         twitter_token$credentials$oauth_token, 
                         twitter_token$credentials$oauth_secret, tornadoids, 
                         base_path = NULL, group_start = 1)
+
+may = rehydratoR(twitter_token$app$key, twitter_token$app$secret, 
+                      twitter_token$credentials$oauth_token, 
+                      twitter_token$credentials$oauth_secret, mayids, 
+                      base_path = NULL, group_start = 1)
 
 ############# FILTER TORNADO FOR CREATING PRECISE GEOMETRIES ############# 
 
@@ -102,6 +122,7 @@ count(tornado_raw, place_type)
 # convert GPS coordinates into lat and lng columns
 # do not use geo_coords! Lat/Lng will be inverted
 tornado = lat_lng(tornado_raw, coords=c("coords_coords"))
+may = lat_lng(may, coords=c("coords_coords"))
 
 # select any tweets with lat and lng columns (from GPS) or 
 # designated place types of your choosing
@@ -109,8 +130,14 @@ tornado = subset(tornado,
                 place_type == 'city'| place_type == 'neighborhood'| 
                   place_type == 'poi' | !is.na(lat))
 
+may = subset(may,
+                  place_type == 'city'| place_type == 'neighborhood'| 
+                    place_type == 'poi' | !is.na(lat))
+
 # convert bounding boxes into centroids for lat and lng columns
 tornado = lat_lng(tornado,coords=c("bbox_coords"))
+may = lat_lng(may,coords=c("bbox_coords"))
+
 
 # re-check counts of place types
 count(tornado, place_type)
@@ -128,9 +155,14 @@ write.table(tornado$status_id,
             here("data","derived","public","tornadoids.txt"), 
             append=FALSE, quote=FALSE, row.names = FALSE, col.names = FALSE)
 
+write.table(may$status_id,
+            here("data","derived","public","mayids.txt"), 
+            append=FALSE, quote=FALSE, row.names = FALSE, col.names = FALSE)
+
 ############# SAVE TWEETs TO DATA/DERIVED/PRIVATE ############# 
 
 saveRDS(tornado, here("data","derived","private","tornado.RDS"))
+saveRDS(may, here("data","derived","private","may.RDS"))
 
 
 ############# TEMPORAL ANALYSIS ############# 
@@ -252,10 +284,10 @@ counties_tornado <- get_estimates("county",
 # https://en.wikipedia.org/wiki/Federal_Information_Processing_Standard_state_code 
 counties_tornado = filter(counties_tornado,
                   STATEFP %in% c('48', '22', '28', '01', '12', '13', '45', '37', 
-                                 '47', '21', '05', '29', '51', '54') )
+                                 '47', '21', '05', '29', '51', '54'. '40') )
 
-# states to include: TX, LA, MS, AL, FL, GA, SC, NC, TN, KY, AR, MO, VA, WV
-#                 = '48', '22', '28', '01', '12', '13', '45', '37', '47', '21', '05', '29', '51', '54'
+# states to include: TX, LA, MS, AL, FL, GA, SC, NC, TN, KY, AR, MO, VA, WV, OK
+#                 = '48', '22', '28', '01', '12', '13', '45', '37', '47', '21', '05', '29', '51', '54', '40'
 
 ######## SPATIAL JOIN TWEETS and COUNTIES ######## 
 # This code was developed by Joseph Holler, 2021
@@ -281,10 +313,26 @@ counties_tornado <- counties_tornado %>%
   left_join(tornado_by_county, by="GEOID") %>% # join count of tweets to counties
   mutate(tornado = replace_na(tornado,0))        # replace nulls with 0's
 
-counties_tornado = counties_tornado %>%
-  mutate(torrate = tornado / POP * 10000)  # torrate is tweets per 10,000
-
 rm(tornado_by_county)
+
+may_by_county = may %>% 
+  st_as_sf(coords = c("lng","lat"), crs=4326) %>%
+  st_transform(4269) %>%
+  st_join(select(counties_tornado,GEOID)) %>%
+  st_drop_geometry() %>%
+  group_by(GEOID) %>% 
+  summarise(maycount = n())
+
+counties_tornado = counties_tornado %>%
+  left_join(may_by_county, by="GEOID") %>%
+  mutate(maycount = replace_na(maycount,0))
+
+counties_tornado = counties_tornado %>%
+  mutate(torrate = tornado / POP * 10000) %>%  # torrate is tweets per 10,000
+  mutate(ntdi = (tornado - maycount) / (tornado + maycount)) %>%  # normalized tweet diff
+  mutate(ntdi = replace_na(ntdi,0))   # replace NULLs with 0's
+
+rm(may_by_county)
 
 # save counties geographic data with derived tweet rates
 saveRDS(counties_tornado,here("data","derived","public","counties_tornado_tweet_counts.RDS"))
