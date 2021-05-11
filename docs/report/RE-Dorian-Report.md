@@ -65,6 +65,13 @@ Here, search the Twitter Developer API for the most recent 200,000 tweets with a
 tornado <- search_tweets("tornado OR Atlanta OR mswx OR TXwx", n=200000, include_rts=FALSE, token=twitter_token, geocode="32,-78,1000mi", retryonratelimit=TRUE)
 ```
 
+Once my tweets were downloaded and imported into R, I started to filter for more precise geographies. Then, I rehydrated those tweets I had selected to access full Tweets. Be sure to examine my [code](/dorian/nn_twitter_analysis_search.r) for a precise report of my workflow.
+```
+tornado_raw = rehydratoR(twitter_token$app$key, twitter_token$app$secret,
+                        twitter_token$credentials$oauth_token,
+                        twitter_token$credentials$oauth_secret, tornadoids,
+                        base_path = NULL, group_start = 1)
+```
 
 
 ## Replication Results
