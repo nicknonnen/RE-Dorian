@@ -76,6 +76,8 @@ tornado_raw = rehydratoR(twitter_token$app$key, twitter_token$app$secret,
 
 ## Replication Results
 
+The results of this analysis sought to capture a holistic representation of the rehydrated Twitter data, by visualizing tweet activity in temporal, network, content, and spatial dimensions. 
+
 ![tweets_per_hour](/assets/tornado_tweetsbyhour.png)
 Figure 1. A measure of tweets per hour in the southeastern US, in late April and early May 2021.
 
@@ -89,7 +91,7 @@ Figure 3. A word cloud network of unique words in tweets produced in the southea
 Figure 4. Visualizing tweet activity by population per county in the southeastern US, in late April and early May 2021.
 
 ![clusters_map](/assets/clusters3.png)
-Figure 5. Visualizing hot spot clusters where tweets related to the Southeast Tornado event were particularly high or particularly low. 
+Figure 5. Visualizing hot spot clusters where tweets related to the Southeast Tornado event were particularly high or particularly low.
 
 ## Unplanned Deviations from the Protocol
 
