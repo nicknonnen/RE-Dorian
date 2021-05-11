@@ -37,7 +37,7 @@ In his replication study, I will ...
 
 **summarize Wang et al (2016) similar to the Holler (2021) summary below**
 
-Holler (2021) losely replicated the methods of Wang et al (2016) for the case of Hurricane Dorian's landfall on the U.S. mainland during the 2019 Atlantic Hurricane season. Data was based on Twitter Search API queries for ....
+Holler (2021) loosely replicated the methods of Wang et al (2016) for the case of Hurricane Dorian's landfall on the U.S. mainland during the 2019 Atlantic Hurricane season. Data was based on Twitter Search API queries for ....
 
 Holler modified Wang et al's methods by not searching for retweets for network analysis, focusing instead on original Tweet content with keywords hurricane, Dorian, or sharpiegate (a trending hashtag referring to the storm). Holler modified the methodology for normalizing tweet data by creating a normalized Tweet difference index and extended teh methodology to test for spatial cluserting with the local Getis-Ord statistic. The study tested a hypothesis that false narratives of hurricane risk promulgated at the highest levels of the United States government would significantly distort the geographic distribution of Twitter activity related to the hurricane and its impacts, finding that original Twitter data still clustered only in the affected areas of the Atlantic coast in spite of false narratives about risk of a westward track through Alabama.
 
@@ -76,7 +76,9 @@ tornado_raw = rehydratoR(twitter_token$app$key, twitter_token$app$secret,
 
 ## Replication Results
 
-The results of this analysis sought to capture a holistic representation of the rehydrated Twitter data, by visualizing tweet activity in temporal, network, content, and spatial dimensions. 
+The results of this analysis sought to capture a holistic representation of the rehydrated Twitter data, by visualizing tweet activity in temporal, network, content, and spatial dimensions. For the temporal analysis, we represented tweet activity by hour in Figure 1. The content and network analysis consisted of finding the top 15 most frequently-seen unique words in the poo of tweets, and then creating the word cloud seen in Figure 3, where unique words commonly found together in tweets are linked by lines. The thicker and darker the lines, the more frequent that pair was.
+
+Finally, we joined the tweet data was county geometry data to map Twitter activity by population (Figure 4) and by hotspot clusters (Figure 5). Mapping by population illustrates where the most Twitter activity was occurring, normalized by population, and mapping by hotspot cluster illustrates where abnormally high or low Twitter activity may be found, normalized by the Twitter activity of a temporally distant timeline.
 
 ![tweets_per_hour](/assets/tornado_tweetsbyhour.png)
 Figure 1. A measure of tweets per hour in the southeastern US, in late April and early May 2021.
@@ -93,17 +95,16 @@ Figure 4. Visualizing tweet activity by population per county in the southeaster
 ![clusters_map](/assets/clusters3.png)
 Figure 5. Visualizing hot spot clusters where tweets related to the Southeast Tornado event were particularly high or particularly low.
 
+
 ## Unplanned Deviations from the Protocol
 
-Summarize changes and uncertainties between
-- your expectation of a reproduction workflow based on the reading and Dorian analysis
-- your final workflow after completing the lab
+Fortunately, this analysis did not suffer any significant unplanned deviations from the replication protocol prepared by Joe Holler in 2019. However, during my initial run-through of this code after debugging and refining code, I realized I had forgotten to include data from a temporally distant timeline with which I could compare tornado-related Twitter activity during early May. To remedy this, I ran another data pull on the morning of May 11th, 2021 (6 days after my initial pull), to access and include any verified and unverified tweets from the same geographic region. I was then able to effectively incorporate this data back into my code using the scaffold provided by Professor Holler and complete my analysis as an accurate replication.  
 
-Fortunately, this analysis did not suffer any significant unplanned deviations from the replication protocol prepared by Joe Holler in 2019.
 
 ## Discussion
 
 Provide a summary and interpretation of your key findings in relation to your research question. Mention if findings confirm or contradict patterns observed by Wang et al (2016) or by Holler (2
+
 
 ## Conclusion
 
