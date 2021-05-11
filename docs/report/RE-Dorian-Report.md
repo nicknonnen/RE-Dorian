@@ -14,10 +14,10 @@ First replication study by Holler, J. 2021 (in preparation). Hurricane Dorian vs
 Replication Author:
 Nick Nonnenmacher
 
-Replication Materials Available at: [github repository name](github repository link)
+Replication Materials Available at: [nicknonnen/RE-Dorian](https://github.com/nicknonnen/RP-Malcomb)
 
 Created: `05 May 2021`
-Revised: `DD Month YYYY`
+Revised: `10 May 2021`
 
 ## Abstract
 
@@ -52,6 +52,14 @@ Outline the data to be used in your replication study, including:
 - attach / link to files containing status_id's for the search results
 - any data used to normalize the tweets
 - methods for analysis / synthesis
+
+
+The data for this lab was procured through a Twitter Developer account, which requires an application but is free of charge. All of our analysis was conducted in RStudio 1.4.1106, and the full code I used to complete this study may be found [here](/dorian/nn_twitter_analysis_search.r).
+
+First, I had to find an event to track. In the early days of May 2021, a minor natural disaster event was unfolding in some southeastern US states, predominantly Mississippi. There is already [a robust Wikipedia article on the event](https://en.wikipedia.org/wiki/Tornado_outbreak_of_May_2–4,_2021), briefly summarizing the geographic location, path, and size of the 82 recorded tornados.
+
+Next, I downloaded appropriate libraries and decided on four search parameters. I used the keyterms 'tornado', 'Atlanta', 'mswx', and 'Txwx', in order to collect a spread of tornado-related tweets in Georgia (where news sources lead me to initially believe the most storm events were - this was later observed to be incorrect, making the 'Atlanta' search term mostly irrelevant), Mississippi ('mswx' is a hashtag indicating Mississippi State Weather Extended tweets), and Texas ('Txwx' is a hashtag indicating Texas Weather Extended tweets, included because many initial 'tornado' tweets also contained this hashtag).
+
 
 ## Replication Results
 
