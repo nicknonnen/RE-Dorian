@@ -144,10 +144,10 @@ count(tornado, place_type)
 # A tibble: 4 x 2
 # place_type       n
 # <chr>        <int>
-  # 1 admin          987
-  # 2 city          6624
+  # 1 admin          986
+  # 2 city          6,578
   # 3 neighborhood     8
-  # 4 poi            117
+  # 4 poi            116
 
 ############# SAVE FILTERED TWEET IDS TO DATA/DERIVED/PUBLIC ############# 
 
@@ -284,7 +284,7 @@ counties_tornado <- get_estimates("county",
 # https://en.wikipedia.org/wiki/Federal_Information_Processing_Standard_state_code 
 counties_tornado = filter(counties_tornado,
                   STATEFP %in% c('48', '22', '28', '01', '12', '13', '45', '37', 
-                                 '47', '21', '05', '29', '51', '54'. '40') )
+                                 '47', '21', '05', '29', '51', '54', '40') )
 
 # states to include: TX, LA, MS, AL, FL, GA, SC, NC, TN, KY, AR, MO, VA, WV, OK
 #                 = '48', '22', '28', '01', '12', '13', '45', '37', '47', '21', '05', '29', '51', '54', '40'
@@ -373,7 +373,7 @@ counties_tornado$locG = as.vector(localG(counties_tornado$torrate, listw = dwm_t
 # optional step to check summary statistics of the local G score
 summary(counties_tornado$locG)
   #    Min.  1st Qu. Median   Mean  3rd Qu.  Max. 
-  # -1.42427 -0.92466 -0.62407 -0.04203 -0.17542 8.79365 
+  # -1.45661 -0.91973 -0.62203 -0.04251 -0.22040 8.96935 
 
 # classify G scores by significance values typical of Z-scores
 # where 1.15 is at the 0.125 confidence level,
