@@ -289,6 +289,22 @@ counties_tornado = filter(counties_tornado,
 # states to include: TX, LA, MS, AL, FL, GA, SC, NC, TN, KY, AR, MO, VA, WV, OK
 #                 = '48', '22', '28', '01', '12', '13', '45', '37', '47', '21', '05', '29', '51', '54', '40'
 
+
+# map results with GGPlot
+# note: cut_interval is an equal interval classification function, while 
+# cut_number is a quantile / equal count function
+# you can change the colors, titles, and transparency of points
+ggplot() +
+  geom_sf(data=counties_tornado, aes(fill=cut_number(DENSITY,5)), color="grey")+
+  scale_fill_brewer(palette="GnBu")+
+  guides(fill=guide_legend(title="Population Density"))+
+  geom_point(data = tornado, aes(x=lng,y=lat),
+             colour = 'purple', alpha = .2) +
+  labs(title = "Tweet Locations During Early May Southeast Tornados")+
+  theme(plot.title=element_text(hjust=0.5),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank())
+
 ######## SPATIAL JOIN TWEETS and COUNTIES ######## 
 # This code was developed by Joseph Holler, 2021
 # This section may not be necessary if you have already spatially joined

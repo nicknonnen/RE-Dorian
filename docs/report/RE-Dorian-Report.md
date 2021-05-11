@@ -76,16 +76,28 @@ tornado_raw = rehydratoR(twitter_token$app$key, twitter_token$app$secret,
 
 ## Replication Results
 
-- temporal analysis graph - zigzaggy line graph
-- content analysis graph - ugly basketball looking thing with blue sphere on top, graph of frequencies of words, word network cloud
-- map of twitter activity
-- hot spot analysis
+![tweets_per_hour](/assets/tornado_tweetsbyhour.png)
+Figure 1. A measure of tweets per hour in the southeastern US, in late April and early May 2021.
+
+![tornado_uniquewordcount](/assets/tornado_uniquewordcount2.png)
+Figure 2. Count of unique words in tweets produced in the southeastern US, in late April and early May 2021.
+
+![tornado_wordcloud](/assets/tornado_wordcloud3.png)
+Figure 3. A word cloud network of unique words in tweets produced in the southeastern US, in late April and early May 2021.
+
+![tweet_map](/assets/tweetmap1.png)
+Figure 4. Visualizing tweet activity by population per county in the southeastern US, in late April and early May 2021.
+
+![clusters_map](/assets/clusters3.png)
+Figure 5. Visualizing hot spot clusters where tweets related to the Southeast Tornado event were particularly high or particularly low. 
 
 ## Unplanned Deviations from the Protocol
 
 Summarize changes and uncertainties between
 - your expectation of a reproduction workflow based on the reading and Dorian analysis
 - your final workflow after completing the lab
+
+Fortunately, this analysis did not suffer any significant unplanned deviations from the replication protocol prepared by Joe Holler in 2019.
 
 ## Discussion
 
