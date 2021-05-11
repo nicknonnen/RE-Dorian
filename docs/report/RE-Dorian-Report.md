@@ -12,7 +12,7 @@ and
 First replication study by Holler, J. 2021 (in preparation). Hurricane Dorian vs Sharpie Pen: an empirical test of social amplification of risk on social media.
 
 Replication Author:
-Your Name
+Nick Nonnenmacher
 
 Replication Materials Available at: [github repository name](github repository link)
 
