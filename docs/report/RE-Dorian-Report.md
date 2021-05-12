@@ -21,16 +21,15 @@ Revised: `11 May 2021`
 
 ## Abstract
 
-Why study the spatial distribution of Twitter data?
+Data looks different with each passing day. As more and more human beings are connected to each other and the world around them through social media platforms such as Twitter, more information about personal lives, the physical world, and the relationships that bind us together may be collected and stored in public repositories, available for researchers to utilize and apply to a wide range of new studies.
 
-Wang et al (2016) analyzed Twitter data for wildfires in California, finding that the social media data ...
+One new application is to assist in disaster aid, management, and research, as demonstrated by Wang et al. (2016) in their study on wildfires in California. There, it was concluded that "social media can characterize a disaster across space and over time" (Wang et al. 2016), meaning useful applications may be drawn from their analysis. To further support this, it was found people's geographic awareness is very strong during disaster events, and that people were interested in communicating information regarding damage and the physical nature of the event as it unfolded.
 
-Holler (2021) is studying Twitter data for Hurricane Dorian on the Atlantic coast, finding that in spite of tending news and social media content regarding a false narrative of risk, original Tweets still clustered significantly along the real hurricane track, and only along the hurricane track.
+In 2021, Holler replicated the methodology of Wang et al., with some modifications, to examine the effectiveness of using tweet data to track social media relationships with natural disaster events (here, Hurricane Dorian of August and September 2019) in the presence of false narratives proliferated by elite users. He found that original Tweets still clustered significantly along the real hurricane track, and only along the hurricane track.
 
-Reproducing and replicating spatial research of .....  continues to be relevant because ....
+Reproducing and replicating spatial research of social media-influenced big data remains relevant, and will only grow more so, because of the expanding nature of social media accessibility to human populations around the world, and the tendency of those populations to interact and *use* those social media platforms. These platforms are already used by billions ([*New York Times*](https://www.nytimes.com/2021/01/27/business/facebook-earnings.html)), so it can be assumed the data provided by scraping these databases will remain available for the foreseeable future.
 
-In his replication study, I will ...
-
+In this replications study, I will validate the workflow created by Holler (2021) in the context of a new disaster situation. I have chosen to focus on the minor disaster event of May 2 - May 4, 2021, in a spate of southeastern and midwestern U.S. states, when 82 individual tornados were recorded.
 
 
 ## Original Study Information
@@ -112,6 +111,8 @@ Do the research findings suggest a need for any future research?
 ## References
 
 Include any referenced studies or materials in the [AAG Style of author-date referencing](https://www.tandf.co.uk//journals/authors/style/reference/tf_USChicagoB.pdf).
+
+Isaac, Mike. 2021. Facebook posts a 33 percent increase jump in revenue and a 53 percent jump in profit. *New York Times*, Jan 27. Accessed May 11, 2021. [https://www.nytimes.com/2021/01/27/business/facebook-earnings.html](https://www.nytimes.com/2021/01/27/business/facebook-earnings.html).
 
 Wang, Z., X. Ye, and M. H. Tsou. 2016. Spatial, temporal, and content analysis of Twitter for wildfire hazards. Natural Hazards 83 (1):523–540. [DOI:10.1007/s11069-016-2329-6](https://link.springer.com/article/10.1007/s11069-016-2329-6)
 
