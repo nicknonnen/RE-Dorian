@@ -57,9 +57,11 @@ First, I had to find an event to track. In the early days of May 2021, a minor n
 
 Next, I downloaded appropriate libraries and decided on four search parameters. I used the keyterms 'tornado', 'Atlanta', 'mswx', and 'Txwx', in order to collect a spread of tornado-related tweets in Georgia (where news sources lead me to initially believe the most storm events were - this was later observed to be incorrect, making the 'Atlanta' search term mostly irrelevant), Mississippi ('mswx' is a hashtag indicating Mississippi State Weather Extended tweets), and Texas ('Txwx' is a hashtag indicating Texas Weather Extended tweets, included because many initial 'tornado' tweets also contained this hashtag).
 
-Here, search the Twitter Developer API for the most recent 200,000 tweets with any of your keyterms. This process may take up to two hours.
+Here, search the Twitter Developer API for the most recent 200,000 tweets with any of your keyterms. In addition, I pulled any verified and unverified from a temporally distant timeline to provide baseline data for "typical" tweet activity in the same geographic area. This process may take up to two hours.
 ```
 tornado <- search_tweets("tornado OR Atlanta OR mswx OR TXwx", n=200000, include_rts=FALSE, token=twitter_token, geocode="32,-78,1000mi", retryonratelimit=TRUE)
+
+may <- search_tweets("-filter:verified OR filter:verified", n=200000, include_rts=FALSE, token=twitter_token, geocode="32,-78,1000mi", retryonratelimit=TRUE)
 ```
 
 Once my tweets were downloaded and imported into R, I started to filter for more precise geographies. Then, I rehydrated those tweets I had selected to access full Tweets. Be sure to examine my [code](/dorian/nn_twitter_analysis_search.r) for a precise report of my workflow.
@@ -68,7 +70,13 @@ tornado_raw = rehydratoR(twitter_token$app$key, twitter_token$app$secret,
                         twitter_token$credentials$oauth_token,
                         twitter_token$credentials$oauth_secret, tornadoids,
                         base_path = NULL, group_start = 1)
+
+may = rehydratoR(twitter_token$app$key, twitter_token$app$secret,
+                        twitter_token$credentials$oauth_token,
+                        twitter_token$credentials$oauth_secret, mayids,
+                        base_path = NULL, group_start = 1)
 ```
+Next, 
 
 
 ## Replication Results
