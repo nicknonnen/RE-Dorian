@@ -14,10 +14,10 @@ First replication study by Holler, J. 2021 (in preparation). Hurricane Dorian vs
 Replication Author:
 Nick Nonnenmacher
 
-Replication Materials Available at: [nicknonnen/RE-Dorian](https://github.com/nicknonnen/RP-Malcomb)
+Replication Materials Available at: [nicknonnen/RE-Dorian](https://github.com/nicknonnen/RE-Dorian)
 
 Created: `05 May 2021`
-Revised: `10 May 2021`
+Revised: `11 May 2021`
 
 ## Abstract
 
@@ -35,14 +35,12 @@ In his replication study, I will ...
 
 ## Original Study Information
 
-**summarize Wang et al (2016) similar to the Holler (2021) summary below**
+This study is a replication of Holler (2021)-which is itself a loose replication of the methods employed by Wang et al. (2016)-focusing on analyzing the effectiveness of using spatial Twitter data related to the landfall of Hurricane Dorian on the east coast of the U.S. mainland during the 2019 Atlantic hurricane season. The Wang et al. (2016) study focused on May 2014 wildfire events in the western U.S., and data was based on Twitter Search API queries for 'wildfire', 'fire', 'San Marcos', and 'Bernardo'.
 
-Holler (2021) loosely replicated the methods of Wang et al (2016) for the case of Hurricane Dorian's landfall on the U.S. mainland during the 2019 Atlantic Hurricane season. Data was based on Twitter Search API queries for ....
+Holler modified Wang et al.'s methods by not searching for retweets for network analysis, focusing instead on original Tweet content with keywords 'hurricane', 'Dorian', or 'sharpiegate' (a trending hashtag referring to the storm). Holler modified the methodology for normalizing tweet data by creating a normalized Tweet difference index and extended the methodology to test for spatial clustering with the local Getis-Ord statistic. The study tested a hypothesis that false narratives of hurricane risk promulgated at the highest levels of the United States government would significantly distort the geographic distribution of Twitter activity related to the hurricane and its impacts, finding that original Twitter data still clustered only in the affected areas of the Atlantic coast in spite of false narratives about risk of a westward track through Alabama.
 
-Holler modified Wang et al's methods by not searching for retweets for network analysis, focusing instead on original Tweet content with keywords hurricane, Dorian, or sharpiegate (a trending hashtag referring to the storm). Holler modified the methodology for normalizing tweet data by creating a normalized Tweet difference index and extended teh methodology to test for spatial cluserting with the local Getis-Ord statistic. The study tested a hypothesis that false narratives of hurricane risk promulgated at the highest levels of the United States government would significantly distort the geographic distribution of Twitter activity related to the hurricane and its impacts, finding that original Twitter data still clustered only in the affected areas of the Atlantic coast in spite of false narratives about risk of a westward track through Alabama.
+Wang et al (2016) conducted their study using the `tm` and `igraph` packages in `R 3.1.2`. Holler also used R, and utilized the `rtweet`, `rehydratoR`, `igraph`, `sf`, and `spdep` packages for analysis.
 
-Wang et al (2016) conducted their study using the `tm` and `igraph` packages in `R 3.1.2`. Is it known what GIS software was used for spatial analysis?
-The replication study by Holler (2021) used R, including the rtweet, rehydratoR, igraph, sf, and spdep packages for analysis.
 
 ## Materials and Procedure
 
@@ -54,7 +52,7 @@ Outline the data to be used in your replication study, including:
 - methods for analysis / synthesis
 
 
-The data for this lab was procured through a Twitter Developer account, which requires an application but is free of charge. All of our analysis was conducted in RStudio 1.4.1106, and the full code I used to complete this study may be found [here](/dorian/nn_twitter_analysis_search.r).
+The data for this lab was procured through a Twitter Developer account, which requires an application but is free of charge. All of our analysis was conducted in `RStudio 1.4.1106`, and the full code I used to complete this study may be found [here](/dorian/nn_twitter_analysis_search.r).
 
 First, I had to find an event to track. In the early days of May 2021, a minor natural disaster event was unfolding in some southeastern US states, predominantly Mississippi. There is already [a robust Wikipedia article on the event](https://en.wikipedia.org/wiki/Tornado_outbreak_of_May_2–4,_2021), briefly summarizing the geographic location, path, and size of the 82 recorded tornados.
 
@@ -114,6 +112,8 @@ Do the research findings suggest a need for any future research?
 ## References
 
 Include any referenced studies or materials in the [AAG Style of author-date referencing](https://www.tandf.co.uk//journals/authors/style/reference/tf_USChicagoB.pdf).
+
+Wang, Z., X. Ye, and M. H. Tsou. 2016. Spatial, temporal, and content analysis of Twitter for wildfire hazards. Natural Hazards 83 (1):523–540. [DOI:10.1007/s11069-016-2329-6](https://link.springer.com/article/10.1007/s11069-016-2329-6)
 
 ####  Report Template References & License
 
