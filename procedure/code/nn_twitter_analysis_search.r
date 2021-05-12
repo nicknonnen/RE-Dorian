@@ -29,9 +29,9 @@ library(spdep)
 library(sf)
 
 twitter_token = create_token(
-  app = "Open Source GIScience",                     #enter your app name in quotes
-  consumer_key = "HSF9cPtTb0GOoxO5RO2BYry9k",  		      #enter your consumer key in quotes - this is Kufre's!!!
-  consumer_secret = "Rn9P8dWPWANJMZHKk86WvB40Toi433KGBDOJTAmEbToRBBVPje",         #enter your consumer secret in quotes
+  app = "Open Source GIScience",   #enter your app name in quotes
+  consumer_key = "___",  		       #enter your consumer key in quotes - this is Kufre's!!!
+  consumer_secret = "___",         #enter your consumer secret in quotes
   access_token = NULL,
   access_secret = NULL
 )
@@ -277,7 +277,7 @@ counties_tornado <- get_estimates("county",
                           product="population",
                           output="wide",
                           geometry=TRUE, keep_geo_vars=TRUE, 
-                          key="464687d998eb6485e2be7346dacdfbf59407aff5")
+                          key="____")
 
 # select only the states you want, with FIPS state codes
 # look up fips codes here:
