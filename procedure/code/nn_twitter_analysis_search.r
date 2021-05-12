@@ -173,7 +173,7 @@ saveRDS(may, here("data","derived","private","may.RDS"))
 tornadoByHour <- ts_data(tornado, by="hours")
 ts_plot(tornado, by="hours")
 =======
-  tornadoTweetsByHour <- ts_data(tornado, by="hours")
+tornadoTweetsByHour <- ts_data(tornado, by="hours")
 ts_plot(tornado, by="hours")
 >>>>>>> 5bfef98f280e66ed25bd44fdb62fed509fa677b9
 
@@ -272,7 +272,7 @@ tornadoWordPairs %>%
 
 #first, sign up for a Census API here:
 # https://api.census.gov/data/key_signup.html
-#replace the key text 'yourkey' with '464687d998eb6485e2be7346dacdfbf59407aff5'! #this one is actually my key
+#replace the key text 'yourkey' with '____'! 
 counties_tornado <- get_estimates("county",
                           product="population",
                           output="wide",

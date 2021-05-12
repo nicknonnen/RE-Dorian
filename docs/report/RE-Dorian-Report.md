@@ -76,7 +76,68 @@ may = rehydratoR(twitter_token$app$key, twitter_token$app$secret,
                         twitter_token$credentials$oauth_secret, mayids,
                         base_path = NULL, group_start = 1)
 ```
-Next, 
+
+Once the filtered tweet IDs and data were saved, I began my analyses. First, I conducted my temporal analysis with the following code, to produce Figure 1 below.
+```
+tornadoTweetsByHour <- ts_data(tornado, by="hours")
+ts_plot(tornado, by="hours")
+```
+
+Next, I conducted my content and network analysis. The first codeblock below creates Figure _, and the second, Figure _.
+```
+tornadoText = tornado %>% select(text) %>% plain_tweets()
+tornadoWords = tornadoText %>% unnest_tokens(word, text)
+
+# count unique words before removing stop words
+count(tornadoWords)
+  # n = 142,342
+
+data("stop_words")
+stop_words = stop_words %>%
+  add_row(word="t.co",lexicon = "SMART") %>%
+  add_row(word="tornado",lexicon = "Search") %>%
+  add_row(word="Atlanta",lexicon = "Search") %>%
+  add_row(word="mswx",lexicon = "Search") %>%
+  add_row(word="Txwx",lexicon = "Search")
+tornadoWords =  tornadoWords %>% anti_join(stop_words)
+
+# count unique words after removing stop words
+count(tornadoWords)
+  # n = 78,937
+
+tornadoWords %>%
+  count(word, sort = TRUE) %>%
+  top_n(15) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(x = word, y = n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip() +
+  labs(x = "Count",
+       y = "Unique words",
+       title = "Count of unique words found in tweets")
+```
+```
+tornadoWordPairs = tornadoText %>%
+  mutate(text = removeWords(tolower(text), stop_words$word)) %>%
+  unnest_tokens(paired_words, text, token = "ngrams", n = 2) %>%
+  separate(paired_words, c("word1", "word2"),sep=" ") %>%
+  count(word1, word2, sort=TRUE)
+
+tornadoWordPairs %>%
+  filter(n >= 25 & !is.na(word1) & !is.na(word2)) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n, edge_width = n)) +
+  geom_node_point(color = "darkslategray4", size = 3) +
+  geom_node_text(aes(label = name), vjust = 1.8, size = 3) +
+  labs(title = "Word Network of Tweets during Early May 2021 Southeast Tornados",
+       x = "", y = "") +
+  theme_void()
+```
+
+Finally, I could complete my spatial analysis. The first step of this analysis was signing up for a Census API at [https://api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html) (included in code provided above). 
+
 
 
 ## Replication Results
